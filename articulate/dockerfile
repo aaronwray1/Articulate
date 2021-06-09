@@ -1,0 +1,20 @@
+ARG VERSION=5.0
+
+FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build-env-articulate
+WORKDIR /app
+COPY *.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish \
+  -c Release \
+  -o ./output
+
+FROM mcr.microsoft.com/dotnet/aspnet:$VERSION
+WORKDIR /app
+COPY articulate.csv .
+COPY --from=build-env-articulate /app/output .
+ENV DOTNET_RUNNING_IN_CONTAINER=true \
+  ASPNETCORE_URLS=http://+:83
+
+EXPOSE 83
+ENTRYPOINT ["dotnet", "articulate.dll"]
