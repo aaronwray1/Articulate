@@ -1,0 +1,19 @@
+ARG VERSION=5.0
+
+FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build-env-categories
+WORKDIR /app
+COPY *.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish \
+  -c Release \
+  -o ./output
+
+FROM mcr.microsoft.com/dotnet/aspnet:$VERSION
+WORKDIR /app
+COPY --from=build-env-categories /app/output .
+ENV DOTNET_RUNNING_IN_CONTAINER=true \
+  ASPNETCORE_URLS=http://+:81
+
+EXPOSE 81
+ENTRYPOINT ["dotnet", "categories.dll"]
