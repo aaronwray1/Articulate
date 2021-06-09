@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+#   frontend:
+#     image: daraoladapo/practical-frontend
+#     build:
+#       context: .
+#       dockerfile: frontend/Dockerfile
+#     ports:
+#       - "7990:80"
+#     depends_on:
+#       - merge-service
+
+  categories-service:
+    image: categories:latest
+    container_name: categories
+    build:
+      context: .
+      dockerfile: categories/Dockerfile
+    ports:
+      - "7991:81"
+
+  numbers-service:
+    image: numbers:latest
+    container_name: numbers
+    build:
+      context: .
+      dockerfile: numbers/Dockerfile
+    ports:
+      - "7992:82"
+
+  articulate-service:
+    image: articulate:latest
+    container_name: articulate
+    build:
+      context: .
+      dockerfile: articulate/Dockerfile
+    ports:
+      - "7993:83"
+    depends_on:
+      - numbers-service
+      - categories-service
