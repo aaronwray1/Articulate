@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient) { }
+
   getArticulate(): Observable<string> {
     return this.http.get<string>('http://localhost:7993/articulate');
   }
