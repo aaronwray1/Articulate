@@ -3,7 +3,7 @@ const PROXY_CONFIG = [
         context: [
             "/articulate",
         ],
-        target: "http://localhost:7993",
+        target: "http://articulate:83",
         secure: false
     }
 ]

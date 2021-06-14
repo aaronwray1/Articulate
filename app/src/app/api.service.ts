@@ -10,6 +10,6 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getArticulate(): Observable<string> {
-    return this.http.get<string>('http://localhost:7993/articulate');
+    return this.http.get('/articulate', { responseType: 'text' });
   }
 }
