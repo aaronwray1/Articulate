@@ -2,3 +2,4 @@
 **/obj/**
 **.tfstate**
 **.hcl
+**.terraform
