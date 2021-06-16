@@ -26,7 +26,11 @@ namespace articulate
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddRouting(r => r.LowercaseUrls = true);
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,6 +51,7 @@ namespace articulate
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthorization();
 

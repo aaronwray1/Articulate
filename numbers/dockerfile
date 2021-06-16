@@ -2,9 +2,8 @@ ARG VERSION=5.0
 
 FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build-env-numbers
 WORKDIR /app
-COPY *.csproj .
-RUN dotnet restore
 COPY . .
+RUN dotnet restore
 RUN dotnet publish \
   -c Release \
   -o ./output
@@ -15,5 +14,4 @@ COPY --from=build-env-numbers /app/output .
 ENV DOTNET_RUNNING_IN_CONTAINER=true \
   ASPNETCORE_URLS=http://+:82
 
-EXPOSE 82
 ENTRYPOINT ["dotnet", "numbers.dll"]

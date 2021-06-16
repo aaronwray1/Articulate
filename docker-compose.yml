@@ -1,42 +1,75 @@
 version: '3.9'
 
 services:
-#   frontend:
-#     image: daraoladapo/practical-frontend
-#     build:
-#       context: .
-#       dockerfile: frontend/Dockerfile
-#     ports:
-#       - "7990:80"
-#     depends_on:
-#       - merge-service
-
+  frontend-service:
+    image: wray27/articulate-app:latest
+    container_name: frontend
+    domainname: "awarticulate"
+    build:
+      context: ./app
+    ports:
+      - "80:80"
+    depends_on: 
+      - articulate-service
+    deploy:
+        resources:
+          limits:
+            cpus: '1.00'
+            memory: 1G
+          reservations:
+            cpus: '0.5'
+            memory: 0.5GB
+    
   categories-service:
-    image: categories:latest
+    image: wray27/categories:latest
     container_name: categories
     build:
-      context: .
-      dockerfile: categories/Dockerfile
+      context: ./categories
     ports:
-      - "7991:81"
-
+      - "81:81"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 0.5G
+        reservations:
+          cpus: '0.25'
+          memory: 0.2GB
+    
   numbers-service:
-    image: numbers:latest
+    image: wray27/numbers:latest
     container_name: numbers
     build:
-      context: .
-      dockerfile: numbers/Dockerfile
+      context: ./numbers
     ports:
-      - "7992:82"
+      - "82:82"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 0.5G
+        reservations:
+          cpus: '0.25'
+          memory: 0.2GB
+    
 
   articulate-service:
-    image: articulate:latest
+    image: wray27/articulate:latest
     container_name: articulate
     build:
-      context: .
-      dockerfile: articulate/Dockerfile
+      context: ./articulate
     ports:
-      - "7993:83"
+      - "83:83"
     depends_on:
       - numbers-service
       - categories-service
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 0.5G
+        reservations:
+          cpus: '0.25'
+          memory: 0.2GB
+    
+    
