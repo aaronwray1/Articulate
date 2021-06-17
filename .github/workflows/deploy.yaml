@@ -69,4 +69,4 @@ jobs:
     - name: Deploy Containers
       run: | 
         docker-compose pull
-        docker-compose run 
+        docker-compose up
