@@ -41,6 +41,8 @@ jobs:
       -
         name: Categories Build/Push Image
         run: |
+          ls
+          tree
           docker build -f categories/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
       -
