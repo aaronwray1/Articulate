@@ -47,6 +47,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     location                     = "eastus"
     resource_group_name          = azurerm_resource_group.myterraformgroup.name
     allocation_method            = "Dynamic"
+    domain_name_label            = "articulateawray"
 
     tags = {
         project = "true"
@@ -172,7 +173,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
     admin_ssh_key {
         username       = "azureuser"
-        public_key     = file("~/.ssh/id_rsa.pub")
+        public_key     = file("~/.ssh/github.pub")
     }
 
     boot_diagnostics {

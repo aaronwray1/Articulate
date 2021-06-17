@@ -1,0 +1,11 @@
+- hosts: all
+  tasks:
+  - name: 'Install Docker'
+    apt:
+      name: Docker
+      state: latest
+      update_cache: true
+  - name: 'Start Docker Service'
+    service:
+      name: Docker
+      state: started
