@@ -53,8 +53,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - 
+      name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
     -
       name: Change Docker Context
       run: | 
         docker context create my-context --docker "host=ssh://azureuser@articulateawray.eastus.cloudapp.azure.com"
         docker context use my-context
+    - 
+      name: Deploy Contianers
+      run: | 
+        docker compose pull
+        docker compose run 
