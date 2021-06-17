@@ -64,5 +64,5 @@ jobs:
         docker context use my-context
     - name: Deploy Contianers
       run: | 
-        docker compose pull
-        docker compose run 
+        docker-compose pull
+        docker-compose run 
