@@ -5,7 +5,7 @@ on:
     branches:
       - 'master'
       - 'issue-11-githubactions'
-      - 'issue-13-tests'
+      - 'issue-13-xunit-tests'
 
 jobs:
   docker-build-and-push:
