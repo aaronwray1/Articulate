@@ -51,3 +51,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/numbers:latest
   deploy:
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Change Docker Context
+      run: | 
+        docker context create my-context --docker "host=ssh://azureuser@articulateawray.eastus.cloudapp.azure.com"
+        docker context use my-context
