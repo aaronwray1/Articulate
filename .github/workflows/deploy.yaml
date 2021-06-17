@@ -25,28 +25,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push
+        name: Articulate App Build/Push Image
         uses: docker/build-push-action@v2
         with:
           context: ./app
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate-app:latest
       -
-        name: Build and push
+        name: Articulate Build/Push Image
         uses: docker/build-push-action@v2
         with:
           context: ./articulate
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate:latest
       -
-        name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: ./categories
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
+        name: Categories Build/Push Image
+        run: |
+          docker build -f categories/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
       -
-        name: Build and push
+        name: Numbers Build/Push Image
         uses: docker/build-push-action@v2
         with:
           context: ./numbers
