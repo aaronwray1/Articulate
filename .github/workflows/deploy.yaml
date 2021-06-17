@@ -64,6 +64,9 @@ jobs:
       run: | 
         docker context create my-context --docker "host=ssh://azureuser@articulateawray.eastus.cloudapp.azure.com"
         docker context use my-context
+    - name: Test SSH
+      run: | 
+        ssh azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello World"
     - name: Deploy Containers
       run: | 
         docker-compose pull
