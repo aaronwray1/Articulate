@@ -24,7 +24,6 @@ namespace articulate.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            // string hostname = this.Request.Host.Value.Split(":")[0];
             string categoriesService = $"http://categories:81/categories";
             var category = await new HttpClient().GetStringAsync(categoriesService);
 
