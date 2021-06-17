@@ -47,7 +47,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Docker Compose Installation
       run: |
         sudo apt-get update
         sudo apt-get upgrade -y
