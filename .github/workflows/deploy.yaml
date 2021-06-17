@@ -41,7 +41,7 @@ jobs:
       -
         name: Categories Build/Push Image
         run: |
-          docker build -f categories/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
+          docker build -f categories/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
       -
         name: Numbers Build/Push Image
