@@ -50,3 +50,4 @@ jobs:
           context: ./numbers
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/numbers:latest
+  deploy:
