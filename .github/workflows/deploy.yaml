@@ -68,5 +68,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello! World!"
     - name: Deploy Containers
       run: | 
+        docker-compose down
         docker-compose pull
-        docker-compose up
+        docker-compose up -d 
