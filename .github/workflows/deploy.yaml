@@ -56,10 +56,9 @@ jobs:
     - 
       name: Install SSH key
       uses: shimataro/ssh-key-action@v2
-        with:
+      with:
           key: ${{ secrets.SSH_KEY }}
           name: github
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
     -
       name: Change Docker Context
       run: | 
