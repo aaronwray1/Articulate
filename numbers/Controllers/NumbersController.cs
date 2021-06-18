@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using random;
 
 namespace numbers.Controllers
 {
@@ -12,17 +13,19 @@ namespace numbers.Controllers
     public class NumbersController : ControllerBase
     {
         private readonly ILogger<NumbersController> _logger;
+        private readonly IRandomGenerator _random;
 
-        public NumbersController(ILogger<NumbersController> logger)
+        public NumbersController(ILogger<NumbersController> logger, IRandomGenerator random)
         {
             _logger = logger;
+            _random = random;
         }
 
         [HttpGet]
         public int Get()
         {
-            var rng = new Random();
-            return rng.Next(1, 100);
+            // var rng = new Random();
+            return _random.Generate(1, 100);
         }
     }
 }

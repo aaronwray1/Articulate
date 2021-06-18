@@ -4,8 +4,10 @@ using articulate.Controllers;
 using Moq;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using RichardSzalay.MockHttp;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace tests
@@ -13,29 +15,139 @@ namespace tests
     public class TestArticulateController
     {
         private ArticulateController articulateController;
-        private Mock<HttpClient> httpClient;
         private readonly ILogger<ArticulateController> _logger;
-        private Mock<Random> mockRandom;
         public TestArticulateController()
         {
-            articulateController = new ArticulateController(_logger);
-            httpClient = new Mock<HttpClient>();
         }
+
         [Fact]
-        public void TestGet()
+        public async void TestGetPerson()
         {
             // Arrange
-            // Task<string> categories = new Task<string>("Person");
-            // httpClient.Setup(h => h.GetStringAsync("")).Returns(categories);
-
-            // Task<string> numbers = new Task<string>("Person");
-            // httpClient.Setup(h => h.GetStringAsync("")).Returns(numbers);
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("http://categories:81/categories")
+                .Respond("text/plain", "Person");
+            mockHttp.When("http://numbers:82/numbers")
+                .Respond("text/plain", "5");
+            var client = new HttpClient(mockHttp);
+            articulateController = new ArticulateController(_logger, client, "../../../../articulate/articulate.csv");
 
             //Act 
-            var result = "";//ArticulateController.Get().Value;
+            var response = await articulateController.Get();
+            string result = (string)((OkObjectResult)response).Value;
 
             // Assert
             Assert.Equal("Martin Luther King", result);
+
+        }
+
+        [Fact]
+
+        public async void TestGetRandom()
+        {
+            // Arrange
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("http://categories:81/categories")
+                .Respond("text/plain", "Random");
+            mockHttp.When("http://numbers:82/numbers")
+                .Respond("text/plain", "5");
+            var client = new HttpClient(mockHttp);
+            articulateController = new ArticulateController(_logger, client, "../../../../articulate/articulate.csv");
+
+            //Act 
+            var response = await articulateController.Get();
+            string result = (string)((OkObjectResult)response).Value;
+
+            // Assert
+            Assert.Equal("Aguaymanto Sour", result);
+
+        }
+
+        [Fact]
+
+        public async void TestGetAction()
+        {
+            // Arrange
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("http://categories:81/categories")
+                .Respond("text/plain", "Action");
+            mockHttp.When("http://numbers:82/numbers")
+                .Respond("text/plain", "100");
+            var client = new HttpClient(mockHttp);
+            articulateController = new ArticulateController(_logger, client, "../../../../articulate/articulate.csv");
+
+            //Act 
+            var response = await articulateController.Get();
+            string result = (string)((OkObjectResult)response).Value;
+
+            // Assert
+            Assert.Equal("embalm", result);
+
+        }
+
+        [Fact]
+
+        public async void TestGetWorld()
+        {
+            // Arrange
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("http://categories:81/categories")
+                .Respond("text/plain", "World");
+            mockHttp.When("http://numbers:82/numbers")
+                .Respond("text/plain", "1");
+            var client = new HttpClient(mockHttp);
+            articulateController = new ArticulateController(_logger, client, "../../../../articulate/articulate.csv");
+
+            //Act 
+            var response = await articulateController.Get();
+            string result = (string)((OkObjectResult)response).Value;
+
+            // Assert
+            Assert.Equal("Los Angeles", result);
+
+        }
+
+        [Fact]
+
+        public async void TestGetNature()
+        {
+            // Arrange
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("http://categories:81/categories")
+                .Respond("text/plain", "Nature");
+            mockHttp.When("http://numbers:82/numbers")
+                .Respond("text/plain", "1");
+            var client = new HttpClient(mockHttp);
+            articulateController = new ArticulateController(_logger, client, "../../../../articulate/articulate.csv");
+
+            //Act 
+            var response = await articulateController.Get();
+            string result = (string)((OkObjectResult)response).Value;
+
+            // Assert
+            Assert.Equal("mountain goat", result);
+
+        }
+
+        [Fact]
+
+        public async void TestGetObject()
+        {
+            // Arrange
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("http://categories:81/categories")
+                .Respond("text/plain", "Object");
+            mockHttp.When("http://numbers:82/numbers")
+                .Respond("text/plain", "100");
+            var client = new HttpClient(mockHttp);
+            articulateController = new ArticulateController(_logger, client, "../../../../articulate/articulate.csv");
+
+            //Act 
+            var response = await articulateController.Get();
+            string result = (string)((OkObjectResult)response).Value;
+
+            // Assert
+            Assert.Equal("camera", result);
 
         }
     }

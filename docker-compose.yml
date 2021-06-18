@@ -8,7 +8,7 @@ services:
     build:
       context: ./app
     ports:
-      - "80:80"
+      - "${WEBPORT}:80"
     depends_on: 
       - articulate-service
     deploy:

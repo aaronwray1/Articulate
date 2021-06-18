@@ -4,7 +4,7 @@ using categories.Controllers;
 using Moq;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-
+using random;
 
 namespace tests
 {
@@ -13,18 +13,19 @@ namespace tests
         private CategoriesController categoriesController;
         private readonly ILogger<CategoriesController> _logger;
 
-        private Mock<Random> mockRandom;
+        private Mock<RandomGenerator> mockRandom;
         public TestCategoriesContoller()
         {
-            categoriesController = new CategoriesController(_logger);
-            mockRandom = new Mock<Random>();
+
         }
 
         [Fact]
         public void TestGet()
         {
             // Arrange
-            mockRandom.Setup(m => m.Next(It.IsAny<int>(), It.IsAny<int>())).Returns(2);
+            mockRandom = new Mock<RandomGenerator>();
+            mockRandom.Setup(m => m.Generate(It.IsAny<int>(), It.IsAny<int>())).Returns(2);
+            categoriesController = new CategoriesController(_logger, mockRandom.Object);
 
             // //Act 
             var result = categoriesController.Get();

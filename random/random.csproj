@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageId>RandomGeneratorAW</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Aaron Wray</Authors>
+    <Company>Avanade</Company>
+
+  </PropertyGroup>
+
+</Project>

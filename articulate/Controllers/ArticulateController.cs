@@ -15,20 +15,25 @@ namespace articulate.Controllers
     {
         // private IConfiguration Configuration;
         private readonly ILogger<ArticulateController> _logger;
+        private HttpClient _client;
 
-        public ArticulateController(ILogger<ArticulateController> logger)
+        private string _csvPath;
+
+        public ArticulateController(ILogger<ArticulateController> logger, HttpClient client, string csvPath = "articulate.csv")
         {
             _logger = logger;
+            _client = client;
+            _csvPath = csvPath;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             string categoriesService = $"http://categories:81/categories";
-            var category = await new HttpClient().GetStringAsync(categoriesService);
+            var category = await _client.GetStringAsync(categoriesService);
 
             string numbersService = $"http://numbers:82/numbers";
-            var number = await new HttpClient().GetStringAsync(numbersService);
+            var number = await _client.GetStringAsync(numbersService);
             return Ok(getArticulateFromCSV(category, Int32.Parse(number)));
 
         }
@@ -36,7 +41,7 @@ namespace articulate.Controllers
         private string getArticulateFromCSV(string category, int index)
         {
 
-            using (var reader = new StreamReader("articulate.csv"))
+            using (var reader = new StreamReader(_csvPath))
             {
 
                 List<string[]> dataset = new List<string[]>();
