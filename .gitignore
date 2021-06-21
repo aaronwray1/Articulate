@@ -3,3 +3,5 @@
 **.tfstate**
 **.hcl
 **.terraform
+test
+tests/TestResults

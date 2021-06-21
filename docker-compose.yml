@@ -8,7 +8,7 @@ services:
     build:
       context: ./app
     ports:
-      - "80:80"
+      - "${WEBPORT}:80"
     depends_on: 
       - articulate-service
     deploy:
@@ -51,7 +51,6 @@ services:
         reservations:
           cpus: '0.25'
           memory: 0.2GB
-    
 
   articulate-service:
     image: wray27/articulate:latest
@@ -71,5 +70,4 @@ services:
         reservations:
           cpus: '0.25'
           memory: 0.2GB
-    
     

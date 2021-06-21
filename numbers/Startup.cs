@@ -11,9 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
+using random;
+
 
 namespace numbers
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,7 +30,7 @@ namespace numbers
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSingleton<IRandomGenerator, RandomGenerator>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

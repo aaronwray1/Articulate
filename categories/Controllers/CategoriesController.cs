@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using random;
 
 namespace categories.Controllers
 {
@@ -16,18 +17,20 @@ namespace categories.Controllers
             "Object", "Nature", "Random", "Person", "Action", "World"
         };
 
+        private readonly IRandomGenerator _random;
+
         private readonly ILogger<CategoriesController> _logger;
 
-        public CategoriesController(ILogger<CategoriesController> logger)
+        public CategoriesController(ILogger<CategoriesController> logger, IRandomGenerator random)
         {
             _logger = logger;
+            _random = random ?? new RandomGenerator();
         }
 
         [HttpGet]
         public String Get()
         {
-            var rng = new Random();
-            return categories[rng.Next(0, 5)];
+            return categories[_random.Generate(0, 5)];
         }
     }
 }
