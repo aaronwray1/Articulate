@@ -7,8 +7,6 @@ using System.Net.Http;
 using System.Collections.Generic;
 using RichardSzalay.MockHttp;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
-
 
 namespace tests
 {

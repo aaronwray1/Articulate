@@ -24,7 +24,7 @@ namespace categories.Controllers
         public CategoriesController(ILogger<CategoriesController> logger, IRandomGenerator random)
         {
             _logger = logger;
-            _random = random;
+            _random = random ?? new RandomGenerator();
         }
 
         [HttpGet]

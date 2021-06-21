@@ -15,14 +15,14 @@ namespace articulate.Controllers
     {
         // private IConfiguration Configuration;
         private readonly ILogger<ArticulateController> _logger;
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         private string _csvPath;
 
         public ArticulateController(ILogger<ArticulateController> logger, HttpClient client, string csvPath = "articulate.csv")
         {
             _logger = logger;
-            _client = client;
+            _client = client;// ?? new HttpClient();
             _csvPath = csvPath;
         }
 

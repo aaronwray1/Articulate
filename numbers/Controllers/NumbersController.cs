@@ -18,7 +18,7 @@ namespace numbers.Controllers
         public NumbersController(ILogger<NumbersController> logger, IRandomGenerator random)
         {
             _logger = logger;
-            _random = random;
+            _random = random ?? new RandomGenerator();
         }
 
         [HttpGet]
