@@ -84,5 +84,5 @@ jobs:
         ssh -o StrictHostKeyChecking=no azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello! World!"
     - name: Deploy Containers
       run: | 
-        docker-compose pull
-        docker-compose --env-file ./config/.prod.env up
+        docker-compose --env-file ./config/.prod.env pull
+        docker-compose --env-file ./config/.prod.env up -d
