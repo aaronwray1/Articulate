@@ -51,7 +51,6 @@ services:
         reservations:
           cpus: '0.25'
           memory: 0.2GB
-    
 
   articulate-service:
     image: wray27/articulate:latest
