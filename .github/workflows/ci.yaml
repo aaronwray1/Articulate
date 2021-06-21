@@ -85,4 +85,4 @@ jobs:
     - name: Deploy Containers
       run: | 
         docker-compose pull
-        docker-compose --env-file ./config/.prod.env up -d
+        docker-compose --env-file ./config/.prod.env up
