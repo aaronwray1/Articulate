@@ -19,7 +19,7 @@ During the creation of the project this was a useful feature which enabled me to
 
 ## 3. Deployment
 
-All 4 containers (services) were deployed to an azure VM, where the frontend could be accessed by a public ip address or the dns name set in the terraform. 
+All 4 containers (services) were deployed to an azure VM, where the frontend could be accessed by a public ip address or the dns name set in the terraform.
 
 ### 3.1. Terraform 
 
@@ -27,4 +27,4 @@ All of the terraform inside of this project can be found in the `./terraform` di
 
 ### 3.2. Ansible 
 
-All of the ansible for this project can be found in the `./ansible` directory. The playbook and inventory are run on the GitHub Actions Runner to configure the deployment virrtua. machine
+All of the ansible for this project can be found in the `./ansible` directory. The playbook and inventory are run on the GitHub Actions Runner to configure the deployment virrtual. machine
