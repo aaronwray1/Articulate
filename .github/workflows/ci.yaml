@@ -11,19 +11,20 @@ jobs:
       - name: Run Tests
         run: |
           dotnet test --collect:"XPlat Code Coverage" ./tests
-      - uses: actions/upload-artifact@v2
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v2
         with:
-          name: upload-test-coverage
-          path: ./tests/TestResults/**/coverage.cobertura.xml
+          name: coverage.xml
+          path: ./tests/TestResults/*/coverage.cobertura.xml
 
   coverage:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - name: download-test-coverage
+      - name: Download Test Coverage
         uses: actions/download-artifact@v2
         with:
-          name: coverage.cobertura.xml
+          name: coverage.xml
       - uses: 5monkeys/cobertura-action@master
         with:
           path: coverage.cobertura.xml
