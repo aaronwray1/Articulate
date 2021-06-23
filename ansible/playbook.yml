@@ -14,3 +14,10 @@
       update_cache: true
     become: yes
     become_user: root
+  - name: 'Configure Docker'
+    ansible.builtin.shell: |
+      groupadd docker
+      usermod -aG docker $USER
+      newgrp docker
+    become: yes
+    become_user: root
