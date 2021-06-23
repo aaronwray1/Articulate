@@ -2,10 +2,26 @@
   tasks:
   - name: 'Install Docker'
     apt:
-      name: Docker
+      name: docker
       state: latest
       update_cache: true
-  - name: 'Start Docker Service'
-    service:
-      name: Docker
-      state: started
+    become: yes
+    become_user: root
+  - name: 'Install Docker Compose'
+    apt:
+      name: docker-compose
+      state: latest
+      update_cache: true
+    become: yes
+    become_user: root
+  - name: Add group "docker" to remote server
+    group:
+      name: docker
+      state: present
+  - name: Adding user azeruser
+    user: name=azureuser
+          group=docker
+          shell=/bin/bash
+          append=yes
+    become: yes
+    become_user: root

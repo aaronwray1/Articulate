@@ -11,15 +11,7 @@ services:
       - "${WEBPORT}:80"
     depends_on: 
       - articulate-service
-    deploy:
-        resources:
-          limits:
-            cpus: '1.00'
-            memory: 1G
-          reservations:
-            cpus: '0.5'
-            memory: 0.5GB
-    
+
   categories-service:
     image: wray27/categories:latest
     container_name: categories
@@ -27,15 +19,7 @@ services:
       context: ./categories
     ports:
       - "81:81"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 0.5G
-        reservations:
-          cpus: '0.25'
-          memory: 0.2GB
-    
+
   numbers-service:
     image: wray27/numbers:latest
     container_name: numbers
@@ -43,14 +27,6 @@ services:
       context: ./numbers
     ports:
       - "82:82"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 0.5G
-        reservations:
-          cpus: '0.25'
-          memory: 0.2GB
 
   articulate-service:
     image: wray27/articulate:latest
@@ -62,12 +38,4 @@ services:
     depends_on:
       - numbers-service
       - categories-service
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 0.5G
-        reservations:
-          cpus: '0.25'
-          memory: 0.2GB
-    
+

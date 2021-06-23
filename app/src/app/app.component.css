@@ -1,0 +1,22 @@
+.bg {
+  /* The image used */
+  background-image: url("../assets/books.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.align{
+  position: float;
+  text-align: left;
+}
+
+.transparent{
+  background-color: transparent;
+}
+

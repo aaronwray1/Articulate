@@ -1,11 +1,6 @@
-name: build-and-push
+name: CI/CD
 
-on:
-  push:
-    branches:
-      - 'master'
-      - 'issue-11-githubactions'
-      - 'issue-13-xunit-tests'
+on: [push, pull_request]
 
 jobs:
   test:
@@ -16,14 +11,92 @@ jobs:
       - name: Run Tests
         run: |
           dotnet test --collect:"XPlat Code Coverage" ./tests
-      - name: Generate Test Report
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage.xml
+          path: ./tests/TestResults/**/coverage.cobertura.xml
+
+  coverage:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Download Test Coverage  
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage.xml
+      - uses: 5monkeys/cobertura-action@master
+        with:
+          path: ./**/coverage.cobertura.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 100
+          skip_covered: false
+          show_branch: true
+          show_class_names: true
+
+  ansible:
+    runs-on: ubuntu-latest
+    needs: terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Ansible
+        run: | 
+          sudo apt-get install  -y ansible
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+            key: ${{ secrets.SSH_KEY }}
+            name: github
+            known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Run Playbook
+        run: | 
+          ansible-playbook ./ansible/playbook.yml -i ./ansible/inventory.yaml
+
+  terraform:
+    needs: coverage
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+    runs-on: ubuntu-latest
+    environment: production
+ 
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+            key: ${{ secrets.SSH_KEY }}
+            name: id_rsa
+            known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Public Keygen
+        run: | 
+          ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/github.pub
+      - name: Terraform Init
         run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.10
-          reportgenerator "-reports:./tests/TestResults/**/coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:html
+          cd ./terraform
+          terraform init
+      - name: Terraform Plan
+        run: |
+          cd ./terraform
+          terraform plan
+      - name: Terraform Apply
+        run: |
+          cd ./terraform
+          terraform apply -auto-approve
 
   docker-build-and-push:
     runs-on: ubuntu-latest
-    needs: test
+    needs: coverage
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -36,6 +109,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker Compose Installation
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+      - name: Pull Images
+        run: |
+          docker-compose --env-file ./config/.prod.env pull
       - name: Articulate App Build/Push Image
         uses: docker/build-push-action@v2
         with:
@@ -49,9 +129,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate:latest
       - name: Categories Build/Push Image
-        run: |
-          docker build -f ./categories/dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest ./categories
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
+        uses: docker/build-push-action@v2
+        with:
+          context: ./categories
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
       - name: Numbers Build/Push Image
         uses: docker/build-push-action@v2
         with:
@@ -61,7 +143,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: docker-build-and-push
+    needs: [docker-build-and-push, ansible]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -75,13 +157,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           name: id_rsa
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    - name: Test SSH
+      run: | 
+        ssh-keyscan -H articulateawray.eastus.cloudapp.azure.com >> ~/.ssh/known_hosts
+        ssh azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello! World!"
     - name: Change Docker Context
       run: | 
         docker context create my-context --docker "host=ssh://azureuser@articulateawray.eastus.cloudapp.azure.com"
         docker context use my-context
-    - name: Test SSH
-      run: | 
-        ssh -o StrictHostKeyChecking=no azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello! World!"
     - name: Deploy Containers
       run: | 
         docker-compose --env-file ./config/.prod.env pull
