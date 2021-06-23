@@ -132,7 +132,7 @@ jobs:
         with:
           context: ./categories
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate-app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/categories:latest
       - name: Numbers Build/Push Image
         uses: docker/build-push-action@v2
         with:
