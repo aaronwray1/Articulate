@@ -42,6 +42,12 @@ jobs:
       - name: Install Ansible
         run: | 
           sudo apt-get install  -y ansible
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+            key: ${{ secrets.SSH_KEY }}
+            name: github
+            known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Run Playbook
         run: | 
           ansible-playbook ./ansible/playbook.yml -i ./ansible/inventory.yaml
