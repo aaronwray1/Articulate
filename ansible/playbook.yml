@@ -14,3 +14,14 @@
       update_cache: true
     become: yes
     become_user: root
+  - name: Add group "docker" to remote server
+    group:
+      name: docker
+      state: present
+  - name: Adding user azeruser
+    user: name=azureuser
+          group=docker
+          shell=/bin/bash
+          append=yes
+    become: yes
+    become_user: root
