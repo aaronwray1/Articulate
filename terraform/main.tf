@@ -8,15 +8,6 @@ terraform {
   }
 }
 
-terraform {
-  backend "azurerm" {
-    resource_group_name  = azurerm_resource_group.myterraformgroup.name
-    storage_account_name = azurerm_storage_account.mystorageaccount.name
-    container_name       = "tfstate"
-    key                  = "prod.terraform.tfstate"
-  }
-}
-
 
 provider "azurerm" {
   features {}
@@ -193,5 +184,14 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
     tags = {
         project = "true"
+    }
+}
+
+terraform {
+    backend "azurerm" {
+        resource_group_name  = "aw-tf-backend"
+        storage_account_name = "awraybackend"
+        container_name       = "tfstate"
+        key                  = "prod.terraform.tfstate"
     }
 }

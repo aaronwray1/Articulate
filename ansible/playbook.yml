@@ -2,10 +2,15 @@
   tasks:
   - name: 'Install Docker'
     apt:
-      name: Docker
+      name: docker
       state: latest
       update_cache: true
-  - name: 'Start Docker Service'
-    service:
-      name: Docker
-      state: started
+    become: yes
+    become_user: root
+  - name: 'Install Docker Compose'
+    apt:
+      name: docker-compose
+      state: latest
+      update_cache: true
+    become: yes
+    become_user: root
