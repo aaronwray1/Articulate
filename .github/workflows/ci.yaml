@@ -25,10 +25,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: coverage.xml
-      - run: ls ~
+      - run: tree
       - uses: 5monkeys/cobertura-action@master
         with:
-          path: /home/runner/work/Articulate/Articulate
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           minimum_coverage: 100
           skip_covered: false
