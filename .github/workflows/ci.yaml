@@ -15,7 +15,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: coverage.xml
-          path: ./tests/TestResults/*/coverage.cobertura.xml
+          path: ./tests/TestResults/**/coverage.cobertura.xml
 
   coverage:
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
           name: coverage.xml
       - uses: 5monkeys/cobertura-action@master
         with:
-          path: coverage.cobertura.xml
+          path: coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           minimum_coverage: 10
           skip_covered: false
