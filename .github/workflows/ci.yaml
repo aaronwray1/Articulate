@@ -115,7 +115,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
       - name: Pull Images
         run: |
-          docker-compose pull
+          docker-compose --env-file ./config/.prod.env pull
       - name: Articulate App Build/Push Image
         uses: docker/build-push-action@v2
         with:
