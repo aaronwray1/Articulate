@@ -116,12 +116,30 @@ jobs:
       - name: Pull Images
         run: |
           docker-compose --env-file ./config/.prod.env pull
-      - name: Build Images
-        run: |
-          docker-compose --env-file ./config/.prod.env build --parallel
-      - name: Push Images
-        run: |
-          docker-compose --env-file ./config/.prod.env push
+      - name: Articulate App Build/Push Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./app
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate-app:latest
+      - name: Articulate Build/Push Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./articulate
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate:latest
+      - name: Categories Build/Push Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./categories
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/articulate-app:latest
+      - name: Numbers Build/Push Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./numbers
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/numbers:latest
 
   deploy:
     runs-on: ubuntu-latest
