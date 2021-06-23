@@ -152,6 +152,7 @@ jobs:
       run: | 
         ssh-keyscan -H articulateawray.eastus.cloudapp.azure.com >> ~/.ssh/known_hosts
         ssh azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello! World!"
+        ssh azureuser@articulateawray.eastus.cloudapp.azure.com groupadd docker; usermod -aG docker $USER; newgrp docker
     - name: Change Docker Context
       run: | 
         docker context create my-context --docker "host=ssh://azureuser@articulateawray.eastus.cloudapp.azure.com"
