@@ -67,7 +67,9 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
       - name: Terraform Directory
-        run: cd ./terraform
+        run: |
+          cd ./terraform
+          ls -al
       - name: Terraform Init
         run: terraform init
       - name: Terraform Format
