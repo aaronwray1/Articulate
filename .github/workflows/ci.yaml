@@ -155,7 +155,7 @@ jobs:
     - name: Test SSH
       run: | 
         ssh -o StrictHostKeyChecking=no azureuser@articulateawray.eastus.cloudapp.azure.com echo "Hello! World!"
-        ssh-keyscan -H articulateawray.eastus.cloudapp.azure >> ~/.ssh/known_hosts
+        ssh-keyscan -H articulateawray.eastus.cloudapp.azure.com >> ~/.ssh/known_hosts
     - name: Deploy Containers
       run: | 
         docker-compose --env-file ./config/.prod.env pull
