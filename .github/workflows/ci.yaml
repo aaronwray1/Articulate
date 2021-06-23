@@ -26,7 +26,7 @@ jobs:
         with:
           name: coverage.xml
           path: ~
-        run: ls ~
+      - run: ls ~
       - uses: 5monkeys/cobertura-action@master
         with:
           path: ~/coverage.xml
