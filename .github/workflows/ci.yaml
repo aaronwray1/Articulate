@@ -118,7 +118,7 @@ jobs:
           docker-compose --env-file ./config/.prod.env pull
       - name: Build Images
         run: |
-          docker-compose --env-file ./config/.prod.env build
+          docker-compose --env-file ./config/.prod.env build --parallel
       - name: Push Images
         run: |
           docker-compose --env-file ./config/.prod.env push
